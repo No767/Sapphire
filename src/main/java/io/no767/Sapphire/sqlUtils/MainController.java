@@ -39,11 +39,19 @@ public class MainController {
 
     @PostMapping(path="/create")
     public @ResponseBody ResponseEntity createNewUser(@RequestBody PostUserJSON userInput) {
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+        df.setTimeZone(tz);
+        String currentDateISO = df.format(new Date());
+
+        UUID uuid = UUID.randomUUID();
+        String userUUID = uuid.toString();
+
         KumikoUser n = new KumikoUser();
-        n.setUserUUID(userInput.getUserUUID());
+        n.setUserUUID(userUUID);
         n.setUsername(userInput.getUsername());
-        n.setDateJoined(userInput.getDateJoined());
-        n.setIsActive(userInput.getIsActive());
+        n.setDateJoined(currentDateISO);
+        n.setIsActive(true);
         userRepo.save(n);
         return ResponseEntity.ok("Saved");
     }
