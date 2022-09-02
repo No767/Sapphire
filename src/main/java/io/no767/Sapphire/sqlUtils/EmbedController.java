@@ -50,4 +50,9 @@ public class EmbedController {
         return embedItemRepo.findAll();
     }
 
+    @GetMapping(path="/{embedUUID}/{embedName}")
+    public @ResponseBody Iterable<EmbedItems> getEmbedsWithName(@PathVariable String embedUUID, @PathVariable String embedName) {
+        return embedItemRepo.findByEmbedUUIDContainsOrEmbedName(embedUUID, embedName);
+    }
+
 }
